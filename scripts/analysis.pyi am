@@ -1,0 +1,31 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the dataset (update the file path if needed)
+data = pd.read_csv('../data/NBA-Data-2010-2024-main/play_off_totals_2010_2024.csv')
+
+# Quick overview of the dataset
+print("First 5 rows of the dataset:")
+print(data.head())
+print("\nDataset Information:")
+print(data.info())
+
+# Example Analysis: Points Per Game (PPG)
+# Ensure the dataset has 'Points' and 'Games' columns
+if 'Points' in data.columns and 'Games' in data.columns:
+    data['PPG'] = data['Points'] / data['Games']
+    print("\nTop 10 Scorers by Points Per Game (PPG):")
+    top_scorers = data[['Player', 'PPG']].sort_values(by='PPG', ascending=False).head(10)
+    print(top_scorers)
+
+    # Create a bar chart for the top 10 scorers
+    plt.barh(top_scorers['Player'], top_scorers['PPG'], color='blue')
+    plt.xlabel('Points Per Game (PPG)')
+    plt.ylabel('Player')
+    plt.title('Top 10 Scorers (Playoffs 2010-2024)')
+    plt.gca().invert_yaxis()  # Reverse the order of players for better readability
+    plt.savefig('../visuals/top_10_scorers_playoffs.png')  # Save the plot
+    plt.show()
+else:
+    print("Error: The dataset does not contain the required 'Points' or 'Games' columns.")
+
